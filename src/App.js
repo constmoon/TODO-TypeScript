@@ -1,25 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import GlobalStyles from './components/Globalstyles';
+import TodoTemplate from './components/TodoTemplate';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <TodoTemplate>
+      <GlobalStyles />
+      <h1>TODO</h1>
+      <div>
+        <input type="text" placeholder="할 일을 입력하세요" />
+        <button type="button">추가</button>
+      </div>
+      <div>
+        <ul>
+          <li>할 일1</li>
+          <li>할 일2</li>
+          <li>할 일3</li>
+        </ul>
+      </div>
+    </TodoTemplate>
   );
 }
 
