@@ -5,6 +5,7 @@ const initial = TodoData;
 
 const TOGGLE = 'TOGGLE';
 const CREATE = 'CREATE';
+const DELETE = 'DELETE';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -14,6 +15,8 @@ const reducer = (state, action) => {
       );
     case CREATE:
       return state.concat(action.todo);
+    case DELETE:
+      return state.filter(todo => todo.id !== action.todo.id);
     default:
       return state;
   }
