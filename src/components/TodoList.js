@@ -19,6 +19,7 @@ const TodoList = () => {
         {todoData.map(todo => (
           <TodoItem
             key={`todo-${todo.id}`}
+            id={todo.id}
             text={todo.text}
             checked={todo.checked}
           />

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTodoDispatch } from '../contexts/TodoContext';
 
 const TodoItemBlock = styled.li`
   color: #333;
@@ -24,15 +25,44 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
   margin-right: 1rem;
 `;
 
+const DeleteButton = styled.button`
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0.3rem;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #000;
+  &:focus {
+    z-index: 1;
+  }
+`;
+
 const TodoItem = props => {
-  const { text, checked } = props;
+  const { id, text, checked } = props;
+
+  const dispatch = useTodoDispatch();
+
+  const onToggle = () => dispatch({
+    type: 'TOGGLE',
+    todo: {
+      id
+    }
+  });
+
+  const onDelete = () => dispatch({
+    type: 'DELETE',
+    todo: {
+      id
+    }
+  });
 
   return (
     <TodoItemBlock>
-      <Checkbox checked={checked} />
+      <Checkbox checked={checked} onChange={onToggle} />
       <TodoText>{text}</TodoText>
+      <DeleteButton onClick={onDelete}>삭제</DeleteButton>
     </TodoItemBlock>
   );
 };
 
-export default TodoItem; 
+export default TodoItem;

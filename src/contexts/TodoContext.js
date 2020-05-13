@@ -4,6 +4,7 @@ import TodoData from '../api/data';
 const initial = TodoData;
 
 const TOGGLE = 'TOGGLE';
+const DELETE = 'DELETE';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -11,6 +12,8 @@ const reducer = (state, action) => {
       return state.map(todo =>
         todo.id === action.todo.id ? { ...todo, checked: !todo.checked } : todo
       );
+    case DELETE:
+      return state.filter(todo => todo.id !== action.todo.id);
     default:
       return state;
   }
