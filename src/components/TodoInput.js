@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useTodoDispatch, useTodoNextId } from '../contexts/TodoContext';
 
 const InputContainer = styled.div`
   display: flex;
@@ -30,10 +31,41 @@ const Button = styled.button`
 `;
 
 const TodoInput = () => {
+  const [value, setValue] = useState('');
+
+  const dispatch = useTodoDispatch();
+  const nextId = useTodoNextId();
+
+  const onChange = e => setValue(e.target.value);
+
+  const addTodo = () => {
+    if (value.length < 1) {
+      alert('할 일을 입력하세요');
+      return;
+    }
+    dispatch({
+      type: 'CREATE',
+      todo: {
+        id: nextId.current++,
+        text: value,
+        checked: false
+      }
+    });
+    setValue('');
+  }
+
   return (
     <InputContainer>
-      <Input type="text" placeholder="할 일을 입력하세요" />
-      <Button type="button">추가</Button>
+      <Input
+        type="text"
+        placeholder="할 일을 입력하세요"
+        value={value}
+        onChange={onChange}
+      />
+      <Button
+        type="button"
+        onClick={addTodo}
+      >추가</Button>
     </InputContainer>
   );
 };

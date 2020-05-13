@@ -1,9 +1,10 @@
-import React, { useReducer, createContext, useContext } from 'react';
+import React, { useReducer, createContext, useContext, useRef } from 'react';
 import TodoData from '../api/data';
 
 const initial = TodoData;
 
 const TOGGLE = 'TOGGLE';
+const CREATE = 'CREATE';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -11,6 +12,8 @@ const reducer = (state, action) => {
       return state.map(todo =>
         todo.id === action.todo.id ? { ...todo, checked: !todo.checked } : todo
       );
+    case CREATE:
+      return state.concat(action.todo);
     default:
       return state;
   }
@@ -18,6 +21,7 @@ const reducer = (state, action) => {
 
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
+const TodoNextIdContext = createContext();
 
 const useTodoState = () => {
   const context = useContext(TodoStateContext);
@@ -35,13 +39,24 @@ const useTodoDispatch = () => {
   return context;
 }
 
+const useTodoNextId = () => {
+  const context = useContext(TodoNextIdContext);
+  if (!context) {
+    throw new Error('Cannot find TodoProvider');
+  }
+  return context;
+}
+
 const TodoProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initial);
+  const nextId = useRef(3);
 
   return (
     <TodoStateContext.Provider value={state}>
       <TodoDispatchContext.Provider value={dispatch}>
-        {children}
+        <TodoNextIdContext.Provider value={nextId}>
+          {children}
+        </TodoNextIdContext.Provider>
       </TodoDispatchContext.Provider>
     </TodoStateContext.Provider>
   );
@@ -50,5 +65,6 @@ const TodoProvider = ({ children }) => {
 export {
   useTodoState,
   useTodoDispatch,
-  TodoProvider
+  TodoProvider,
+  useTodoNextId
 }
