@@ -38,6 +38,12 @@ const TodoInput = () => {
 
   const onChange = e => setValue(e.target.value);
 
+  const handleKeyPress = e => {
+    if (e.keyCode === 13) {
+      addTodo();
+    }
+  }
+
   const addTodo = () => {
     if (value.length < 1) {
       alert('할 일을 입력하세요');
@@ -61,6 +67,7 @@ const TodoInput = () => {
         placeholder="할 일을 입력하세요"
         value={value}
         onChange={onChange}
+        onKeyDown={handleKeyPress}
       />
       <Button
         type="button"
