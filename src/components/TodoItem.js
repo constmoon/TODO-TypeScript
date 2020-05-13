@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTodoDispatch } from '../contexts/TodoContext';
 
 const TodoItemBlock = styled.li`
   color: #333;
@@ -25,11 +26,20 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
 `;
 
 const TodoItem = props => {
-  const { text, checked } = props;
+  const { id, text, checked } = props;
+
+  const dispatch = useTodoDispatch();
+
+  const onToggle = () => dispatch({
+    type: 'TOGGLE',
+    todo: {
+      id
+    }
+  });
 
   return (
     <TodoItemBlock>
-      <Checkbox checked={checked} />
+      <Checkbox checked={checked} onChange={onToggle} />
       <TodoText>{text}</TodoText>
     </TodoItemBlock>
   );
