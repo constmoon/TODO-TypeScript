@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import TodoItem from './TodoItem';
-import TodoData from '../api/data';
+import { useTodoState } from '../contexts/TodoContext';
 
 const TodoListBlock = styled.div`
   height: 600px;
@@ -11,7 +11,7 @@ const TodoListBlock = styled.div`
 `;
 
 const TodoList = () => {
-  const todoData = TodoData;
+  const todoData = useTodoState();
 
   return (
     <TodoListBlock>
