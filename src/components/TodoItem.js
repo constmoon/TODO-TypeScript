@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MdDelete } from 'react-icons/md';
 import { useTodoDispatch } from '../contexts/TodoContext';
 
 const TodoItemBlock = styled.li`
@@ -30,8 +31,8 @@ const DeleteButton = styled.button`
   margin-left: auto;
   padding: 0.3rem;
   position: relative;
-  background-color: #fff;
-  border: 1px solid #000;
+  border: 0;
+  font-size: 1.2rem;
   &:focus {
     z-index: 1;
   }
@@ -60,7 +61,12 @@ const TodoItem = props => {
     <TodoItemBlock>
       <Checkbox checked={checked} onChange={onToggle} />
       <TodoText>{text}</TodoText>
-      <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+      <DeleteButton
+        aria-label="Delete"
+        onClick={onDelete}
+      >
+        <MdDelete />
+      </DeleteButton>
     </TodoItemBlock>
   );
 };
