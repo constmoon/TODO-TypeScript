@@ -7,6 +7,7 @@ const TOGGLE = 'TOGGLE';
 const CREATE = 'CREATE';
 const DELETE = 'DELETE';
 const EDIT = 'EDIT';
+const SET_EDIT_MODE = 'SET_EDIT_MODE';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -18,9 +19,18 @@ const reducer = (state, action) => {
       return state.concat(action.todo);
     case DELETE:
       return state.filter(todo => todo.id !== action.todo.id);
+    case SET_EDIT_MODE:
+      return state.map(todo =>
+        todo.id === action.todo.id ? { ...todo, editMode: true } : todo
+      );
     case EDIT:
       return state.map(todo =>
-        todo.id === action.todo.id ? { ...todo, text: action.todo.text } : todo
+        todo.id === action.todo.id ?
+          {
+            ...todo,
+            text: action.todo.text,
+            editMode: false
+          } : todo
       );
     default:
       return state;
