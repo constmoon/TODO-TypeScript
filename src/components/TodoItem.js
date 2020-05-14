@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { MdDelete, MdEdit, MdDone } from 'react-icons/md';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import { useTodoDispatch } from '../contexts/TodoContext';
+import TodoEdit from './TodoEdit';
 
 const TodoItemBlock = styled.li`
   color: #333;
@@ -9,6 +10,7 @@ const TodoItemBlock = styled.li`
   text-align: left;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border-top: 1px solid #333;
   border-bottom: 1px solid #333;
   margin-top: -1px;
@@ -16,17 +18,6 @@ const TodoItemBlock = styled.li`
 
 const TodoText = styled.label`
   max-width: 370px;
-`;
-
-const TodoEditText = styled.input.attrs({ type: 'text' })`
-  max-width: 370px;
-  width: 100%;
-  border: 0;
-  border-bottom: 1px solid #000;
-  font-size: 1rem;
-  &:focus {
-    outline: 0;
-  }
 `;
 
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
@@ -52,20 +43,8 @@ const EditButton = styled.button`
   }
 `;
 
-const SubmitEdit = styled.button`
-  cursor: pointer;
-  padding: 0.3rem;
-  border: 0;
-  font-size: 1.2rem;
-  position: relative;
-  &:focus {
-    z-index: 1;
-  }
-`;
-
 const DeleteButton = styled.button`
   cursor: pointer;
-  margin-left: auto;
   padding: 0.3rem;
   position: relative;
   border: 0;
@@ -76,9 +55,7 @@ const DeleteButton = styled.button`
 `;
 
 const TodoItem = props => {
-  const { id, text, checked } = props;
-  const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(text);
+  const { id, text, checked, editMode } = props;
 
   const dispatch = useTodoDispatch();
 
@@ -96,55 +73,31 @@ const TodoItem = props => {
     }
   });
 
-  const onEditText = e => {
-    return setEditText(e.target.value)
-  }
-
-  const onSubmitEdit = (id, text) => {
-    setIsEditing(true)
-    dispatch({
-      type: 'EDIT',
-      todo: {
-        id,
-        text
-      }
-    });
-    setIsEditing(false)
-  }
+  const setEditMode = () => dispatch({
+    type: 'SET_EDIT_MODE',
+    todo: {
+      id
+    }
+  });
 
   return (
     <TodoItemBlock>
       <Checkbox checked={checked} onChange={onToggle} />
-      {isEditing ?
-        <TodoEditText
-          value={editText}
-          onChange={onEditText}
-        /> :
-        <TodoText>{text}</TodoText>}
-      <ButtonWrap>
-        {isEditing ?
-          <SubmitEdit
-            aria-label="submit"
-            onClick={() => onSubmitEdit(id, editText)}
-          >
-            <MdDone />
-          </SubmitEdit> :
-          <EditButton
-            aria-label="Edit"
-            onClick={() => setIsEditing(true)}
-          >
-            <MdEdit />
-          </EditButton>
-        }
-        <DeleteButton
-          aria-label="Delete"
-          onClick={onDelete}
-        >
-          <MdDelete />
-        </DeleteButton>
-      </ButtonWrap>
+      {editMode ? <TodoEdit id={id} text={text} /> :
+        <>
+          <TodoText>{text}</TodoText>
+          <ButtonWrap>
+            <EditButton aria-label="Edit" onClick={setEditMode}>
+              <MdEdit />
+            </EditButton>
+            <DeleteButton aria-label="Delete" onClick={onDelete}>
+              <MdDelete />
+            </DeleteButton>
+          </ButtonWrap>
+        </>
+      }
     </TodoItemBlock>
   );
-};
+}
 
 export default TodoItem;

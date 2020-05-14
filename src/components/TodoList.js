@@ -22,6 +22,7 @@ const TodoList = () => {
             id={todo.id}
             text={todo.text}
             checked={todo.checked}
+            editMode={todo.editMode}
           />
         ))}
       </ul>
