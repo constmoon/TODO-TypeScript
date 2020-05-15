@@ -82,10 +82,10 @@ const TodoItem = props => {
 
   return (
     <TodoItemBlock>
-      <Checkbox checked={checked} onChange={onToggle} />
+      <Checkbox checked={checked} onChange={onToggle} id={`todo-${id}`} />
       {editMode ? <TodoEdit id={id} text={text} /> :
         <>
-          <TodoText>{text}</TodoText>
+          <TodoText htmlFor={`todo-${id}`}>{text}</TodoText>
           <ButtonWrap>
             <EditButton aria-label="Edit" onClick={setEditMode}>
               <MdEdit />
