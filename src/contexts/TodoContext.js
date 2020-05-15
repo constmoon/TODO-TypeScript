@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useContext, useRef } from 'react';
+import React, { useReducer, createContext, useContext } from 'react';
 import TodoData from '../api/data';
 
 const initial = TodoData;
@@ -16,7 +16,13 @@ const reducer = (state, action) => {
         todo.id === action.todo.id ? { ...todo, checked: !todo.checked } : todo
       );
     case CREATE:
-      return state.concat(action.todo);
+      const nextId = Math.max(...state.map(todo => todo.id)) + 1;
+      return state.concat({
+        id: nextId,
+        text: action.todo.text,
+        checked: false,
+        editMode: false,
+      });
     case DELETE:
       return state.filter(todo => todo.id !== action.todo.id);
     case SET_EDIT_MODE:
@@ -39,7 +45,6 @@ const reducer = (state, action) => {
 
 const TodoStateContext = createContext();
 const TodoDispatchContext = createContext();
-const TodoNextIdContext = createContext();
 
 const useTodoState = () => {
   const context = useContext(TodoStateContext);
@@ -57,24 +62,13 @@ const useTodoDispatch = () => {
   return context;
 }
 
-const useTodoNextId = () => {
-  const context = useContext(TodoNextIdContext);
-  if (!context) {
-    throw new Error('Cannot find TodoProvider');
-  }
-  return context;
-}
-
 const TodoProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initial);
-  const nextId = useRef(3);
 
   return (
     <TodoStateContext.Provider value={state}>
       <TodoDispatchContext.Provider value={dispatch}>
-        <TodoNextIdContext.Provider value={nextId}>
-          {children}
-        </TodoNextIdContext.Provider>
+        {children}
       </TodoDispatchContext.Provider>
     </TodoStateContext.Provider>
   );
@@ -83,6 +77,5 @@ const TodoProvider = ({ children }) => {
 export {
   useTodoState,
   useTodoDispatch,
-  TodoProvider,
-  useTodoNextId
+  TodoProvider
 }

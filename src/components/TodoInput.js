@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useTodoDispatch, useTodoNextId } from '../contexts/TodoContext';
+import { useTodoDispatch } from '../contexts/TodoContext';
 
 const InputContainer = styled.div`
   display: flex;
@@ -34,7 +34,6 @@ const TodoInput = () => {
   const [value, setValue] = useState('');
 
   const dispatch = useTodoDispatch();
-  const nextId = useTodoNextId();
 
   const onChange = e => setValue(e.target.value);
 
@@ -52,9 +51,7 @@ const TodoInput = () => {
     dispatch({
       type: 'CREATE',
       todo: {
-        id: nextId.current++,
-        text: value,
-        checked: false
+        text: value
       }
     });
     setValue('');
