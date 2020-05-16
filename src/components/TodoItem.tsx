@@ -1,8 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { useTodoDispatch } from '../contexts/TodoContext';
+import { useTodoDispatch, Todo } from '../contexts/TodoContext';
 import TodoEdit from './TodoEdit';
+
+type TodoItemProps = {
+  todo: Todo;
+};
 
 const TodoItemBlock = styled.li`
   color: #333;
@@ -54,36 +58,30 @@ const DeleteButton = styled.button`
   }
 `;
 
-const TodoItem = props => {
-  const { id, text, checked, editMode } = props;
+const TodoItem = ({ todo }: TodoItemProps) => {
+  const { id, text, checked, editMode } = todo;
 
   const dispatch = useTodoDispatch();
 
   const onToggle = () => dispatch({
     type: 'TOGGLE',
-    todo: {
-      id
-    }
+    id
   });
 
   const onDelete = () => dispatch({
     type: 'DELETE',
-    todo: {
-      id
-    }
+    id
   });
 
   const setEditMode = () => dispatch({
     type: 'SET_EDIT_MODE',
-    todo: {
-      id
-    }
+    id
   });
 
   return (
     <TodoItemBlock>
       <Checkbox checked={checked} onChange={onToggle} id={`todo-${id}`} />
-      {editMode ? <TodoEdit id={id} text={text} /> :
+      {editMode ? <TodoEdit todo={todo} /> :
         <>
           <TodoText htmlFor={`todo-${id}`}>{text}</TodoText>
           <ButtonWrap>

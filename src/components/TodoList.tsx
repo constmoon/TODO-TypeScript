@@ -19,10 +19,7 @@ const TodoList = () => {
         {todoData.map(todo => (
           <TodoItem
             key={`todo-${todo.id}`}
-            id={todo.id}
-            text={todo.text}
-            checked={todo.checked}
-            editMode={todo.editMode}
+            todo={todo}
           />
         ))}
       </ul>
@@ -30,4 +27,4 @@ const TodoList = () => {
   );
 };
 
-export default TodoList; 
+export default TodoList;

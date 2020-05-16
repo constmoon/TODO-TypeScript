@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MdDone } from 'react-icons/md';
-import { useTodoDispatch } from '../contexts/TodoContext';
+import { useTodoDispatch, Todo } from '../contexts/TodoContext';
+
+type TodoEditProps = {
+  todo: Todo;
+};
+type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
 
 const TodoEditText = styled.input.attrs({ type: 'text' })`
   max-width: 370px;
@@ -26,23 +31,21 @@ const SubmitEdit = styled.button`
   }
 `;
 
-const TodoEdit = props => {
-  const { id, text } = props;
+const TodoEdit = ({ todo }: TodoEditProps) => {
+  const { id, text } = todo;
   const [editText, setEditText] = useState(text);
 
   const dispatch = useTodoDispatch();
 
-  const onEditText = e => {
+  const onEditText = (e: InputChangeEvent) => {
     return setEditText(e.target.value)
   }
 
-  const onSubmitEdit = (id, text) => {
+  const onSubmitEdit = (id: number, text: string) => {
     dispatch({
       type: 'EDIT',
-      todo: {
-        id,
-        text
-      }
+      id,
+      text
     });
   }
 
@@ -62,4 +65,4 @@ const TodoEdit = props => {
   );
 }
 
-export default TodoEdit; 
+export default TodoEdit;

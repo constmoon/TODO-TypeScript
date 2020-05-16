@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useTodoDispatch } from '../contexts/TodoContext';
 
+type InputEvent = React.ChangeEvent<HTMLInputElement>;
+type ButtonEvent = React.KeyboardEvent<HTMLButtonElement>;
+
 const InputContainer = styled.div`
   display: flex;
 `;
@@ -35,9 +38,9 @@ const TodoInput = () => {
 
   const dispatch = useTodoDispatch();
 
-  const onChange = e => setValue(e.target.value);
+  const onChange = (e: InputEvent) => setValue(e.target.value);
 
-  const handleKeyPress = e => {
+  const handleKeyPress = (e: ButtonEvent) => {
     if (e.keyCode === 13) {
       addTodo();
     }
@@ -50,9 +53,7 @@ const TodoInput = () => {
     }
     dispatch({
       type: 'CREATE',
-      todo: {
-        text: value
-      }
+      text: value
     });
     setValue('');
   }
@@ -74,4 +75,4 @@ const TodoInput = () => {
   );
 };
 
-export default TodoInput; 
+export default TodoInput;
