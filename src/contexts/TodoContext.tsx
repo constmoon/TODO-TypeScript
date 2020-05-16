@@ -76,7 +76,8 @@ const useTodoDispatch = () => {
   return context;
 }
 
-const TodoProvider = ({ children }) => {
+const TodoProvider = ({ children }: { children: React.ReactNode }) => {
+  const initial = TodoData;
   const [state, dispatch] = useReducer(reducer, initial);
 
   return (
