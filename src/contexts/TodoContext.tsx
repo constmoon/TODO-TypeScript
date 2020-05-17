@@ -9,27 +9,29 @@ export type Todo = {
 };
 type TodoState = Todo[];
 
-const TOGGLE = 'TOGGLE';
-const CREATE = 'CREATE';
-const DELETE = 'DELETE';
-const EDIT = 'EDIT';
-const SET_EDIT_MODE = 'SET_EDIT_MODE';
+enum ActionType {
+  TOGGLE,
+  CREATE,
+  DELETE,
+  EDIT,
+  SET_EDIT_MODE
+}
 
 type Action =
-  | { type: "CREATE"; text: string }
-  | { type: "TOGGLE"; id: number }
-  | { type: "DELETE"; id: number }
-  | { type: "SET_EDIT_MODE"; id: number }
-  | { type: "EDIT"; id: number; text: string };
+  | { type: typeof ActionType.TOGGLE; id: number }
+  | { type: typeof ActionType.CREATE; text: string }
+  | { type: typeof ActionType.DELETE; id: number }
+  | { type: typeof ActionType.SET_EDIT_MODE; id: number }
+  | { type: typeof ActionType.EDIT; id: number; text: string };
 type TodoDispatch = Dispatch<Action>;
 
 const reducer = (state: TodoState, action: Action): TodoState => {
   switch (action.type) {
-    case TOGGLE:
+    case ActionType.TOGGLE:
       return state.map(todo =>
         todo.id === action.id ? { ...todo, checked: !todo.checked } : todo
       );
-    case CREATE:
+    case ActionType.CREATE:
       const nextId = Math.max(...state.map(todo => todo.id)) + 1;
       return state.concat({
         id: nextId,
@@ -37,13 +39,13 @@ const reducer = (state: TodoState, action: Action): TodoState => {
         checked: false,
         editMode: false,
       });
-    case DELETE:
+    case ActionType.DELETE:
       return state.filter(todo => todo.id !== action.id);
-    case SET_EDIT_MODE:
+    case ActionType.SET_EDIT_MODE:
       return state.map(todo =>
         todo.id === action.id ? { ...todo, editMode: true } : todo
       );
-    case EDIT:
+    case ActionType.EDIT:
       return state.map(todo =>
         todo.id === action.id ?
           {
@@ -90,6 +92,7 @@ const TodoProvider = ({ children }: { children: React.ReactNode }) => {
 }
 
 export {
+  ActionType,
   useTodoState,
   useTodoDispatch,
   TodoProvider

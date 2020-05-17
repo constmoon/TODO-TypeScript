@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { MdDone } from 'react-icons/md';
-import { useTodoDispatch, Todo } from '../contexts/TodoContext';
+import { ActionType, useTodoDispatch, Todo } from '../contexts/TodoContext';
 
 type TodoEditProps = {
   todo: Todo;
@@ -43,7 +43,7 @@ const TodoEdit = ({ todo }: TodoEditProps) => {
 
   const onSubmitEdit = (id: number, text: string) => {
     dispatch({
-      type: 'EDIT',
+      type: ActionType.EDIT,
       id,
       text
     });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useTodoDispatch } from '../contexts/TodoContext';
+import { ActionType, useTodoDispatch } from '../contexts/TodoContext';
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 type ButtonEvent = React.KeyboardEvent<HTMLButtonElement>;
@@ -52,7 +52,7 @@ const TodoInput = () => {
       return;
     }
     dispatch({
-      type: 'CREATE',
+      type: ActionType.CREATE,
       text: value
     });
     setValue('');

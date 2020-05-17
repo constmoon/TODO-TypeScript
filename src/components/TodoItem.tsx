@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MdDelete, MdEdit } from 'react-icons/md';
-import { useTodoDispatch, Todo } from '../contexts/TodoContext';
+import { ActionType, useTodoDispatch, Todo } from '../contexts/TodoContext';
 import TodoEdit from './TodoEdit';
 
 type TodoItemProps = {
@@ -64,17 +64,17 @@ const TodoItem = ({ todo }: TodoItemProps) => {
   const dispatch = useTodoDispatch();
 
   const onToggle = () => dispatch({
-    type: 'TOGGLE',
+    type: ActionType.TOGGLE,
     id
   });
 
   const onDelete = () => dispatch({
-    type: 'DELETE',
+    type: ActionType.DELETE,
     id
   });
 
   const setEditMode = () => dispatch({
-    type: 'SET_EDIT_MODE',
+    type: ActionType.SET_EDIT_MODE,
     id
   });
 
